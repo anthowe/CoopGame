@@ -8,6 +8,7 @@
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "CoopGame.h"
 #include "TimerManager.h"
+#include "AllowWindowsPlatformTypes.h"
 
 
 static int32 DebugWeaponDrawing = 0;
@@ -75,7 +76,6 @@ void ASWeapon::Fire()
 			}
 
 			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
-
 			
 
 			UParticleSystem* SelectedEffect = nullptr;
@@ -120,6 +120,16 @@ void ASWeapon::StopFire()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
 }
+
+//Test Code Below
+//void ASWeapon::OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+//{
+//	if (OtherActor)
+//	{
+//		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *OtherActor->GetName()); // This line causes the crash
+//	}
+//
+//}
 
 void ASWeapon::PlayFireEffects(FVector TraceEnd)
 {
