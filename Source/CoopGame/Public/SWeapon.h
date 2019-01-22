@@ -80,9 +80,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StopFire();
 	
-	//Test code below
-	/*UFUNCTION()
-	void OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-	*/
 };

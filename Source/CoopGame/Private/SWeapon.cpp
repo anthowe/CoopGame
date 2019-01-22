@@ -30,9 +30,11 @@ ASWeapon::ASWeapon()
 
 void ASWeapon::BeginPlay()
 {
+	
 	Super::BeginPlay();
 
 	TimeBetweenShots = 60/RateOfFire;
+	
 }
 
 
@@ -121,15 +123,7 @@ void ASWeapon::StopFire()
 	GetWorldTimerManager().ClearTimer(TimerHandle_TimeBetweenShots);
 }
 
-//Test Code Below
-//void ASWeapon::OnCompHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-//{
-//	if (OtherActor)
-//	{
-//		UE_LOG(LogTemp, Warning, TEXT("You hit: %s"), *OtherActor->GetName()); // This line causes the crash
-//	}
-//
-//}
+
 
 void ASWeapon::PlayFireEffects(FVector TraceEnd)
 {
