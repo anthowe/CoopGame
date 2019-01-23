@@ -6,8 +6,11 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "CoopGame.h"
 #include "SWeapon.h"
+#include "DrawDebugHelpers.h"
+#include "Engine.h"
 
 // Sets default values
 ASCharacter::ASCharacter()
@@ -25,12 +28,22 @@ ASCharacter::ASCharacter()
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
+	
+	
+
+	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
+	FP_Gun->SetOnlyOwnerSee(true);			// only the owning player will see this mesh
+	FP_Gun->bCastDynamicShadow = false;
+	FP_Gun->CastShadow = false;
+	// FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
+	FP_Gun->SetupAttachment(RootComponent );
 
 	ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;
 
 	WeaponAttachSocketName = "WeaponSocket";
 }
+
 
 // Called when the game starts or when spawned
 void ASCharacter::BeginPlay()
@@ -112,6 +125,30 @@ void ASCharacter::Tick(float DeltaTime)
 	float NewFOV = FMath::FInterpTo(CameraComp->FieldOfView, TargetFOV, DeltaTime, ZoomInterpSpeed);
 
 	CameraComp->SetFieldOfView(NewFOV);
+	
+	GunOffset = FVector(0.f, 30.f, 60.f);
+	FHitResult OutHit;
+	FVector Start = FP_Gun->GetComponentLocation()+ GunOffset;
+
+	FVector ForwardVector = CameraComp->GetForwardVector();
+	FVector End = (Start + (ForwardVector *1000.0f));
+	FCollisionQueryParams QueryParams;
+
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
+
+	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, QueryParams))
+	{
+		if (OutHit.bBlockingHit)
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::White, FString::Printf(TEXT("You hit: %s"), *OutHit.GetActor()->GetName()));
+				/*GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Impact Point: %s"), *OutHit.ImpactPoint.ToString()));
+				GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("Normal Point: %s"), *OutHit.ImpactNormal.ToString()));*/
+			}
+		}
+	}
+
 
 }
 
