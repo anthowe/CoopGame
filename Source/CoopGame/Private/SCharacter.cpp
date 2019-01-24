@@ -9,6 +9,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "CoopGame.h"
 #include "SWeapon.h"
+#include "SHealthComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine.h"
 
@@ -25,18 +26,12 @@ ASCharacter::ASCharacter()
 	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
 
 	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
+
+	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
 	
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 	
-	
-
-	FP_Gun = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
-	FP_Gun->SetOnlyOwnerSee(true);			// only the owning player will see this mesh
-	FP_Gun->bCastDynamicShadow = false;
-	FP_Gun->CastShadow = false;
-	// FP_Gun->SetupAttachment(Mesh1P, TEXT("GripPoint"));
-	FP_Gun->SetupAttachment(RootComponent );
 
 	ZoomedFOV = 65.0f;
 	ZoomInterpSpeed = 20;
@@ -62,6 +57,7 @@ void ASCharacter::BeginPlay()
 		CurrentWeapon->SetOwner(this);
 		CurrentWeapon->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, WeaponAttachSocketName);
 	}
+	HealthComp->OnHealthChanged.AddDynamic(this, &ASCharacter::OnHealthChanged);
 }
 
 void ASCharacter::MoveForward(float Value)
@@ -115,6 +111,23 @@ void ASCharacter::StopFire()
 
 }
 
+void ASCharacter::OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, 
+	class AController* InstigatedBy, AActor* DamageCauser)
+{
+	if (Health <= 0.0f && !bDied)
+	{
+		bDied = true;
+		//Die
+
+		GetMovementComponent()->StopMovementImmediately();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+		DetachFromControllerPendingDestroy();
+
+		SetLifeSpan(10.0f);
+	}
+}
+
 // Called every frame
 void ASCharacter::Tick(float DeltaTime)
 {
@@ -126,28 +139,7 @@ void ASCharacter::Tick(float DeltaTime)
 
 	CameraComp->SetFieldOfView(NewFOV);
 	
-	GunOffset = FVector(0.f, 30.f, 60.f);
-	FHitResult OutHit;
-	FVector Start = FP_Gun->GetComponentLocation()+ GunOffset;
-
-	FVector ForwardVector = CameraComp->GetForwardVector();
-	FVector End = (Start + (ForwardVector *1000.0f));
-	FCollisionQueryParams QueryParams;
-
-	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1, 0, 1);
-
-	if (GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, QueryParams))
-	{
-		if (OutHit.bBlockingHit)
-		{
-			if (GEngine)
-			{
-				GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::White, FString::Printf(TEXT("You hit: %s"), *OutHit.GetActor()->GetName()));
-				/*GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Impact Point: %s"), *OutHit.ImpactPoint.ToString()));
-				GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("Normal Point: %s"), *OutHit.ImpactNormal.ToString()));*/
-			}
-		}
-	}
+	
 
 
 }

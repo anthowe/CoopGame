@@ -9,6 +9,7 @@
 #include "CoopGame.h"
 #include "TimerManager.h"
 #include "AllowWindowsPlatformTypes.h"
+#include "Engine.h"
 
 
 static int32 DebugWeaponDrawing = 0;
@@ -102,11 +103,34 @@ void ASWeapon::Fire()
 		}
 		if (DebugWeaponDrawing >0)
 		{
-			DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::White, false, 1.0f, 0, 1.0f);
+			return;//DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1, 0, 1);
 		}
 		PlayFireEffects(TracerEndPoint);
 
 		LastFireTime = GetWorld()->TimeSeconds;
+
+		/*GunOffset = FVector(0.f, 30.f, 60.f);
+	FHitResult OutHit;
+	FVector Start = FP_Gun->GetComponentLocation()+ GunOffset;
+
+	FVector ForwardVector = CameraComp->GetForwardVector();
+	FVector End = (Start + (ForwardVector *1000.0f));
+	FCollisionQueryParams QueryParams;*/
+
+	DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Green, false, 1.0f, 0, 1.0f);
+
+		if (GetWorld()->LineTraceSingleByChannel(Hit, EyeLocation, TraceEnd, ECC_Visibility, QueryParams))
+		{
+			if (Hit.bBlockingHit)
+			{
+				if (GEngine)
+				{
+					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::White, FString::Printf(TEXT("You hit: %s"), *Hit.GetActor()->GetName()));
+					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Yellow, FString::Printf(TEXT("Impact Point: %s"), *Hit.ImpactPoint.ToString()));
+					GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Blue, FString::Printf(TEXT("Normal Point: %s"), *Hit.ImpactNormal.ToString()));
+				}
+			}
+		}
 	}
 }
 
