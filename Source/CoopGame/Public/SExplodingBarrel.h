@@ -12,9 +12,6 @@ class UStaticMeshComponent;
 class USHealthComponent;
 class URadialForceComponent;
 class UParticleSystem;
-class UMaterialInterface;
-class UGameplayStatics;
-
 
 
 UCLASS()
@@ -28,8 +25,7 @@ public:
 	
 
 protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UStaticMeshComponent* MeshComp;
@@ -44,12 +40,11 @@ protected:
 	void OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType,
 	class AController* InstigatedBy, AActor* DamageCauser);
 	
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerOnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType,
-	class AController* InstigatedBy, AActor* DamageCauser);
-
-	UPROPERTY(Replicated, BlueprintReadOnly, Category = "FX")
+	UPROPERTY(ReplicatedUsing=OnRep_Exploded)
 	bool bExploded;
+
+	UFUNCTION()
+	void OnRep_Exploded();
 	
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
 	float ExplosionImpulse;
@@ -60,12 +55,4 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "FX")
 	UMaterialInterface* ExplodedMaterial;
 
-	
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	
-	
 };
