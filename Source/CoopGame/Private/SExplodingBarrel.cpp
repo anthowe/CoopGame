@@ -33,8 +33,6 @@ ASExplodingBarrel::ASExplodingBarrel()
 
 	ExplosionImpulse = 400.f;
 
-	SetReplicates(true);
-
 }
 
 // Called when the game starts or when spawned
@@ -48,10 +46,6 @@ void ASExplodingBarrel::BeginPlay()
 void ASExplodingBarrel::OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, 
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
-	if (Role < ROLE_Authority)
-	{
-		ServerOnHealthChanged(OwningHealthComp, Health, HealthDelta, DamageType, InstigatedBy, DamageCauser);
-	}
 
 	if (bExploded) 
 	{
@@ -72,15 +66,7 @@ void ASExplodingBarrel::OnHealthChanged(USHealthComponent* OwningHealthComp, flo
 
 }
 
-void ASExplodingBarrel::ServerOnHealthChanged_Implementation(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
-{
-	OnHealthChanged(OwningHealthComp, Health, HealthDelta, DamageType, InstigatedBy, DamageCauser);
-}
 
-bool ASExplodingBarrel::ServerOnHealthChanged_Validate(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, class AController* InstigatedBy, AActor* DamageCauser)
-{
-	return true;
-}
 
 // Called every frame
 void ASExplodingBarrel::Tick(float DeltaTime)
@@ -89,10 +75,3 @@ void ASExplodingBarrel::Tick(float DeltaTime)
 
 }
 
-void ASExplodingBarrel::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(ASExplodingBarrel, ExplodedMaterial);
-	DOREPLIFETIME(ASExplodingBarrel, bExploded);
-}

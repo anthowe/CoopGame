@@ -44,9 +44,7 @@ protected:
 	void OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType,
 		class AController* InstigatedBy, AActor* DamageCauser);
 	
-	UFUNCTION(Server, Reliable, WithValidation)
-	void ServerOnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType,
-			class AController* InstigatedBy, AActor* DamageCauser);
+
 
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "FX")
 	bool bExploded;
