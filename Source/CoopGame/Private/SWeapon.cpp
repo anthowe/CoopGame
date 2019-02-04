@@ -101,7 +101,11 @@ void ASWeapon::Fire()
 			return;//DrawDebugLine(GetWorld(), EyeLocation, TraceEnd, FColor::Red, false, 1, 0, 1);
 		}
 		PlayFireEffects(TracerEndPoint);
-
+		
+		if (FireSound != NULL)
+		{
+			UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+		}
 
 		if (Role == ROLE_Authority)
 		{

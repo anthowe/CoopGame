@@ -10,6 +10,7 @@
 class USkeletalMeshComponent;
 class UDamageType;
 class UParticleSystem;
+class USoundBase;
 
 USTRUCT()
 struct FHitScanTrace
@@ -101,5 +102,6 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StopFire();
 	
-
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+	class USoundBase* FireSound;
 };

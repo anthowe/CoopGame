@@ -13,6 +13,7 @@ class USkeletalMeshComponent;
 class USHealthComponent;
 
 
+
 UCLASS()
 class COOPGAME_API ASCharacter : public ACharacter
 {
@@ -71,6 +72,7 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
 
+	
 	void StartFire();
 
 	void StopFire();
@@ -89,5 +91,6 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual FVector GetPawnViewLocation() const override;
+	
 	
 };

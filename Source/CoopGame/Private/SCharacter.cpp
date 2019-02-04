@@ -38,6 +38,8 @@ ASCharacter::ASCharacter()
 	ZoomInterpSpeed = 20;
 
 	WeaponAttachSocketName = "WeaponSocket";
+
+	/*DefaultHealth = 100.f;*/
 }
 
 
@@ -104,6 +106,7 @@ void ASCharacter::StartFire()
 	if (CurrentWeapon)
 	{
 		CurrentWeapon->StartFire();
+		
 	}
 }
 
@@ -119,6 +122,13 @@ void ASCharacter::StopFire()
 void ASCharacter::OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType, 
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
+	/*if (DefaultHealth >= 0)
+	{
+		float CurrentHealth = DefaultHealth - HealthDelta;
+		UE_LOG(LogTemp, Warning, TEXT("Current Health: %f"), CurrentHealth)
+	}*/
+	
+
 	if (Health <= 0.0f && !bDied)
 	{
 		bDied = true;
