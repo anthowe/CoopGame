@@ -1,17 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "STargetDummy.h"
 #include "../Public/SCharacter.h"
 #include "../Public/SWeapon.h"
-#include "Camera/CameraComponent.h"
-#include "GameFramework/SpringArmComponent.h"
-#include "GameFramework/PawnMovementComponent.h"
-#include "Components/CapsuleComponent.h"
-#include "Components/SkeletalMeshComponent.h"
 #include "CoopGame.h"
-#include "SWeapon.h"
 #include "SHealthComponent.h"
-#include "DrawDebugHelpers.h"
 #include "Engine.h"
+#include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
 
 
@@ -21,10 +16,7 @@ ASTargetDummy::ASTargetDummy()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	GetMovementComponent()->GetNavAgentPropertiesRef().bCanCrouch = true;
-
-	GetCapsuleComponent()->SetCollisionResponseToChannel(COLLISION_WEAPON, ECR_Ignore);
-
+	
 	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
 }
 
@@ -52,12 +44,15 @@ void ASTargetDummy::OnHealthChanged(USHealthComponent* OwningHealthComp, float H
 		bDied = true;
 		//Die
 
-		GetMovementComponent()->StopMovementImmediately();
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		bool DestroyActor(this);
 
-		DetachFromControllerPendingDestroy();
+		UE_LOG(LogTemp, Warning, TEXT("He died me!!!!"));
 
-		SetLifeSpan(10.0f);
+		SetLifeSpan(1.0f);
+	}
+	else
+	{
+		return;
 	}
 }
 // Called every frame

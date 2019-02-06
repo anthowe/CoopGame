@@ -21,10 +21,14 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	USHealthComponent* HealthComp;
+	
+	UFUNCTION()
 	void OnHealthChanged(USHealthComponent* OwningHealthComp, float Health, float HealthDelta, const class UDamageType* DamageType,
-		class AController* InstigatedBy, AActor* DamageCauser);
+	class AController* InstigatedBy, AActor* DamageCauser);
 
-	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Player")
+	UPROPERTY(BlueprintReadOnly, Category = "Player")
 	bool bDied;
 
 public:	
