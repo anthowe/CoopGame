@@ -14,14 +14,20 @@ class COOPGAME_API ASAICharacter : public ACharacter
 {
 	GENERATED_BODY()
 
+	
+
 public:
 	// Sets default values for this character's properties
 	ASAICharacter();
+	
+
+	/*UPROPERTY(EditInstanceOnly, Category = "Patrol Route")
+	TArray<AActor*> PatrolPointsCPP;*/
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		USHealthComponent* HealthComp;
 

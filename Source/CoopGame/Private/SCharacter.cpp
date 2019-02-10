@@ -8,7 +8,6 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "CoopGame.h"
-#include "SWeapon.h"
 #include "SHealthComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Engine.h"
@@ -190,6 +189,11 @@ FVector ASCharacter::GetPawnViewLocation() const
 		return CameraComp->GetComponentLocation();
 
 	}return Super::GetPawnViewLocation();
+}
+
+void ASCharacter::PullTrigger()
+{
+	CurrentWeapon->StartFire();
 }
 	
 

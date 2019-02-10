@@ -92,5 +92,6 @@ public:
 
 	virtual FVector GetPawnViewLocation() const override;
 	
-	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
+	void PullTrigger();
 };
