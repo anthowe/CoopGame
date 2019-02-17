@@ -41,6 +41,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components")
 	USkeletalMeshComponent* MeshComp;
 
+	
+
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category= "Weapon")
 	TSubclassOf<UDamageType> DamageType;
 	
@@ -74,7 +76,8 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "ProjectileWeapon")
 	TSubclassOf<AActor> BulletClass;
-
+	
+	UFUNCTION(BlueprintCallable, Category ="Weapon")
 	void Fire();
 
 	UFUNCTION(Server, Reliable, WithValidation)

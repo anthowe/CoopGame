@@ -72,9 +72,10 @@ protected:
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 	FName WeaponAttachSocketName;
 
-	
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StartFire();
 
+	UFUNCTION(BlueprintCallable, Category = "Weapon")
 	void StopFire();
 
 	UFUNCTION()

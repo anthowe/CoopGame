@@ -46,6 +46,13 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, Category = "Player")
 		FName WeaponAttachSocketName;
+	
+	
+	//TODO ADDED TODAY
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Weapon")
+		UStaticMeshComponent* WeaponComp;
+	void StartFire();
+	void StopFire();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

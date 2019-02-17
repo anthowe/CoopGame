@@ -48,6 +48,7 @@ void ASWeapon::BeginPlay()
 
 void ASWeapon::Fire()
 {
+	UE_LOG(LogTemp, Warning, TEXT("DONKEY: Fire"));
 	//Trace the world, from pawn eyes to crosshair location
 	if (Role < ROLE_Authority)
 	{
@@ -161,6 +162,8 @@ bool ASWeapon::ServerFire_Validate()
 
 void ASWeapon::StartFire()
 {
+	
+
 	float FirstDelay =FMath::Max(LastFireTime + TimeBetweenShots - GetWorld()->TimeSeconds, 0.0f);
 
 	GetWorldTimerManager().SetTimer(TimerHandle_TimeBetweenShots, this, &ASWeapon::Fire, TimeBetweenShots, true, FirstDelay);

@@ -14,6 +14,10 @@ ASAICharacter::ASAICharacter()
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthComp = CreateDefaultSubobject<USHealthComponent>(TEXT("HealthComp"));
+	
+	
+	//TODO ADDED TODAY
+	WeaponComp = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WeaponComp"));
 
 	WeaponAttachSocketName = "WeaponSocket";
 }
@@ -58,6 +62,23 @@ void ASAICharacter::OnHealthChanged(USHealthComponent* OwningHealthComp, float H
 	{
 		return;
 	}
+}
+void ASAICharacter::StartFire()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StartFire();
+
+	}
+}
+
+void ASAICharacter::StopFire()
+{
+	if (CurrentWeapon)
+	{
+		CurrentWeapon->StopFire();
+	}
+
 }
 
 // Called every frame
