@@ -51,11 +51,11 @@ void USHealthComponent::HandleTakeAnyDamage(AActor* DamagedActor, float Damage, 
 
 	OnHealthChanged.Broadcast(this, Health, Damage, DamageType, InstigatedBy, DamageCauser);
 }
-//
-//float USHealthComponent::GetHealth() const
-//{
-//	return Health;
-//}
+
+float USHealthComponent::GetHealth() const
+{
+	return Health;
+}
 
 void USHealthComponent::Heal(float HealAmount)
 {
