@@ -5,7 +5,6 @@
 #include "SGameState.h"
 #include "SPlayerState.h"
 #include "TimerManager.h"
-#include "Engine/World.h"
 
 
 ASGameMode::ASGameMode()
@@ -38,9 +37,11 @@ void ASGameMode::EndWave()
 {
 	GetWorldTimerManager().ClearTimer(TimerHandle_BotSpawner);
 
-	PrepareForNextWave();
+	//PrepareForNextWave();
 
 	SetWaveState(EWaveState::WaitingToComplete);
+
+	
 }
 
 void ASGameMode::PrepareForNextWave()
@@ -49,6 +50,8 @@ void ASGameMode::PrepareForNextWave()
 	GetWorldTimerManager().SetTimer(TimerHandle_NextWaveStart, this, &ASGameMode::StartWave, TimeBetweenWaves, false);
 
 	SetWaveState(EWaveState::WaitingToStart);
+
+	RestartDeadPlayers();
 }
 
 void ASGameMode::CheckWaveState()
@@ -92,12 +95,12 @@ void ASGameMode::CheckAnyPlayerAlive()
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
 		APlayerController* PC = It->Get();
-		if (PC&&PC->GetPawn())
+		if (PC && PC->GetPawn())
 		{
 			APawn* MyPawn = PC->GetPawn();
 
 			USHealthComponent* HealthComp = Cast<USHealthComponent>(MyPawn->GetComponentByClass(USHealthComponent::StaticClass()));
-			if (ensure(HealthComp)&& HealthComp->GetHealth() > 0.0f)
+			if (ensure(HealthComp) && HealthComp->GetHealth() > 0.0f)
 			{
 				//A player is still alive
 				return;
@@ -126,6 +129,18 @@ void ASGameMode::SetWaveState(EWaveState NewState)
 	{
 		GS->SetWaveState(NewState);
 		
+	}
+}
+
+void ASGameMode::RestartDeadPlayers()
+{
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* PC = It->Get();
+		if (PC && PC->GetPawn() == nullptr)
+		{
+			RestartPlayer(PC);
+		}
 	}
 }
 
