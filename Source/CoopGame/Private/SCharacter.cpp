@@ -191,10 +191,6 @@ FVector ASCharacter::GetPawnViewLocation() const
 	}return Super::GetPawnViewLocation();
 }
 
-void ASCharacter::PullTrigger()
-{
-	CurrentWeapon->StartFire();
-}
 	
 
 void ASCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

@@ -27,6 +27,7 @@ ASWeapon::ASWeapon()
 
 	BaseDamage = 20.0f;
 
+	BulletSpread = 2.0f;
 	RateOfFire = 600;
 
 	SetReplicates(true);
@@ -61,10 +62,17 @@ void ASWeapon::Fire()
 		FVector EyeLocation;
 		FRotator EyeRotation;
 
-		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+		
 
+		MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+		
 		FVector ShotDirection = EyeRotation.Vector();
+
 		FVector TraceEnd = EyeLocation + (ShotDirection * 10000);
+
+		float HalfRad = FMath::DegreesToRadians(BulletSpread);
+
+		ShotDirection = FMath::VRandCone(ShotDirection, HalfRad, HalfRad);
 
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(MyOwner);
@@ -90,7 +98,7 @@ void ASWeapon::Fire()
 				ActualDamage =(ActualDamage *4.0f);
 			}
 
-			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), this, DamageType);
+			UGameplayStatics::ApplyPointDamage(HitActor, ActualDamage, ShotDirection, Hit, MyOwner->GetInstigatorController(), MyOwner, DamageType);
 			
 			PlayImpactEffects(SurfaceType, Hit.ImpactPoint);
 		
