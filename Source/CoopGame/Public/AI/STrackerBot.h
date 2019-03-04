@@ -85,6 +85,10 @@ protected:
 
 	int32 PowerLevel;
 
+	FTimerHandle TimerHandle_RefreshPath;
+
+	void RefeshPath();
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
