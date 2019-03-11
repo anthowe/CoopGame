@@ -4,11 +4,8 @@
 #include "../Public/SWeapon.h"
 
 
-
-
 void ASProjectileWeapon::Fire()
 {
-
 	AActor* MyOwner = GetOwner();
 	if (MyOwner && ProjectileClass)
 	{
@@ -27,3 +24,5 @@ void ASProjectileWeapon::Fire()
 	}
 	
 }
+
+

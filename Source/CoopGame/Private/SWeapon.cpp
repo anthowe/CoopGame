@@ -149,6 +149,8 @@ void ASWeapon::Fire()
 			}
 		}*/
 	}
+	
+	
 }
 
 void ASWeapon::OnRep_HitScanTrace()

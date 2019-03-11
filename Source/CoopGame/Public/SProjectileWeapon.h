@@ -16,9 +16,10 @@ class COOPGAME_API ASProjectileWeapon : public ASWeapon
 	
 protected:
 	
-	virtual void Fire();
+	virtual void Fire() override;
 	
 	UPROPERTY(EditDefaultsOnly, Category="ProjectileWeapon")
 	TSubclassOf<AActor> ProjectileClass;
 	
+
 };

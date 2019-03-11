@@ -12,6 +12,7 @@ class UDamageType;
 class UParticleSystem;
 class USoundBase;
 
+
 USTRUCT()
 struct FHitScanTrace
 {
@@ -78,7 +79,7 @@ protected:
 	TSubclassOf<AActor> BulletClass;
 	
 	UFUNCTION(BlueprintCallable, Category ="Weapon")
-	void Fire();
+	virtual void Fire();
 
 	UFUNCTION(Server, Reliable, WithValidation)
 	void ServerFire();
@@ -101,6 +102,8 @@ protected:
 
 	UFUNCTION()
 	void OnRep_HitScanTrace();
+
+	
 public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Weapon")
